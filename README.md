@@ -85,7 +85,7 @@ Please note that there's a server part (see peer.js for details). I've set up my
 
 ## Legal
 
-
+You can use the source code in any way you want, all components are MIT-licensed. But when you use the app (as opposed to staring into source code), then it's free only if you swear to share your Grammy award 
 ## Acknowledgements
 
 App uses peer.js library for WebRTC. Corresponding server part is ...
