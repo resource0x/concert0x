@@ -89,7 +89,7 @@ You can use the source code in any way you want, all components are MIT-licensed
 
 ## Acknowledgements
 
-App uses peer.js library for WebRTC. Corresponding server part is ...
+App uses [peer.js](https://github.com/peers/peerjs) library for WebRTC. Corresponding server part can be found [here](https://github.com/peers/peerjs-server)
 
 Built-in synth is borrowed from ...
 
