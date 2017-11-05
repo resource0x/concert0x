@@ -91,11 +91,11 @@ You can use the source code in any way you want, all components are MIT-licensed
 
 App uses [peer.js](https://github.com/peers/peerjs) library for WebRTC. Corresponding server part can be found [here](https://github.com/peers/peerjs-server)
 
-Built-in synth is borrowed from ...
+Built-in synth is borrowed from [soundfont-player](https://github.com/danigb/soundfont-player)
 
-Local store library: 
+Local store library: [link](https://github.com/niiknow/xstore) 
 
 UI: jquery UI
 
-hterm: library that I once found on github and copied, but now cannot find it (there's a project of the same name, but it doesn't look the same). Not sure.
+hterm: library that I once found on github and cloned, but now cannot find it (there's a project of the same name, but it doesn't look the same). Not sure.
 
