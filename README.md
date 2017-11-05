@@ -93,7 +93,7 @@ App uses [peer.js](https://github.com/peers/peerjs) library for WebRTC. Correspo
 
 Built-in synth is borrowed from [soundfont-player](https://github.com/danigb/soundfont-player)
 
-Local store library: [link](https://github.com/niiknow/xstore) 
+Local store library: [xstore](https://github.com/niiknow/xstore) 
 
 UI: jquery UI
 
