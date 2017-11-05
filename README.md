@@ -8,7 +8,7 @@ App is available at https://chat.concert0x.com
 
 ## MIDI setup
 
-First off, make sure the driver corresponding to your keyboard is installed on your computer, and the device shows up in "MIDI in" menu and (if your keyboard is a synth) also in MIDI out. Otherwise, please troublishoot and reload the page.
+First off, make sure the driver corresponding to your keyboard is installed on your computer, and the device shows up in "MIDI in" menu and (if your keyboard is a synth) also in MIDI out. Otherwise, please troubleshoot and reload the page.
 
 Select your instrument from the menu. Notice 'echo on/off' button. 'Echo on' is for instruments like dumb MIDI controllers that doesn't have built-in synth. To cover this case, application comes equipped with built-in SW synth of rather average quality, you won't emjoy it much, but it's better than the alternative (which is: nothing at all).
 
@@ -16,7 +16,7 @@ Select your instrument from the menu. Notice 'echo on/off' button. 'Echo on' is 
 
 Here are most common modes of MIDI setup:
 
-- If you have an electric piano with built-in synth (Roland, Yamaha, Casio etc), it should show up also in both "MIDI in" and "MIDI out" menus. Select it in both, and choose 'echo off' to avoid routing your own input to your own output.
+- If you have an electric piano with built-in synth (Roland, Yamaha, Casio etc), it should show up in both "MIDI in" and "MIDI out" menus. Select it in both, and choose 'echo off' to avoid routing your own input to your own output.
 
 - if you have dumb MIDI keyboard, select it in "MIDI in", and then select "built-in" from 'MIDI out menu'. Set 'echo on'
 
@@ -24,9 +24,9 @@ Here are most common modes of MIDI setup:
 
 ## Logging in
 
-The system will open a session (with unique session id) for you and print URL to send to your partner - you can use email or whatever, beyond the app. You will share the session with your partner in different roles. The organizer's role is 'piano1', and partner's - 'piano2'. There can also be a listener to your duo (just one!). This one is not supposed to have a MIDI piano at all, and even if he does, it won't have any effect whatsoever.
+The system will open a session (with unique session id) for you and print URL to send to your partner - you can use email or whatever, beyond the app. You will join the session with your partner in different roles. The organizer's role is 'piano1', and partner's - 'piano2'. There can also be a listener to your duo (just one!). This one is not supposed to have a MIDI piano at all, and even if he does, it won't have any effect whatsoever.
 
-So piano1 should connect first, piano2 - second. Piano2 has to press 'connect' button to establish communication with piano1, which at that point is already connected. 
+So piano1 should connect first, piano2 - second. Piano2 has to press 'connect' button to establish communication with piano1, who at that point is supposed to already connect. 
 
 ## Chat
 
