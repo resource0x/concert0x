@@ -79,13 +79,14 @@ We opted for keeping UI clean and uncluttered, so instead of complex menus, ther
 
 ## Code
 
-For now, I don't want to publish the code here in easy-to-digest form because the app is still at experimentation phase, and honestly, there's nothing much to see b/c all the heavy lifting of WebRTC is done by peer.js library. If you just want to make sure the app doesn't do anything bad, I placed concatenated sources in release directory. Though you can always hit F12 in Chrome debugger and see what is actually served.
+For now, I don't want to publish the code here in easy-to-digest form because the app is still at experimentation phase, and honestly, there's nothing much to see b/c all the heavy lifting of WebRTC is done by peer.js library. In case you want to make sure the app doesn't do anything bad, I placed concatenated sources in release directory. Though you can always hit F12 in Chrome debugger and see what is actually served.
 
-Please note that there's a server part (see peer.js for details). I've set up my own server in the cloud, but in order to save $$$, I had to settle for a pretty basic VM instance, which can be overwhelmed if the app suddenly becomes popular. My plan, of course, is to eventually sell the whole thing to the highest bidder for $1 billion dollars plus. I'm ready to consider offers. Yes, it's the billion with the "B" (I have extenuating financial circumstances).
+Please note that there's a server part (see peer.js for details). I've set up my own server in the cloud, but in order to save $$$, I had to settle for a pretty basic VM instance, which can be overwhelmed if the app suddenly becomes overly popular.  
 
 ## Legal
 
-You can use the source code in any way you want, all components are MIT-licensed. But when you use the app (as opposed to staring into source code), then it's free only if you swear to share your Grammy award 
+You can use the source code in any way you want, all components are MIT-licensed. But if you use the app (as opposed to staring into source code), then your generous donation will be appreciated (I can swear to use it solely for the noble purposes)
+
 ## Acknowledgements
 
 App uses peer.js library for WebRTC. Corresponding server part is ...
