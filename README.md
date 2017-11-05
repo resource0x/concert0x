@@ -48,7 +48,7 @@ We opted for keeping UI clean and uncluttered, so instead of complex menus, ther
 
 **\save name** - stop recording and save the song under given name 
 
-**\play name [tempoFactor]** - play recorded song in a different tempo. Good for recording virtuosic pieces when you can't actually play virtuosically. Unexplored territory.
+**\play name [tempoFactor]** - play recorded song in a different tempo. Good for recording virtuosic pieces for showing off when you can't actually play virtuosically. Unexplored territory. Killer feature of the app.
 
 **\ls**" - list recorded songs
 
