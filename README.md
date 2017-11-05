@@ -32,6 +32,13 @@ So piano1 should connect first, piano2 - second. Piano2 has to press 'connect' b
 
 For regular text messages, there's a text box down the page. If you enter text message starting with backslash character, it's interpreted as a "command", not a text message
 
+## Video/audio
+
+Video/audio isn't enabled by default (for your peace of mind). To enable it, add parameter to url, like v=yy or yn or ny. First letter (y/n) is for video, second - for audio. You will be requested permission to enable camera and/or microphone. Your partner should also run in video/audio mode, or else nothing will work. Piano1 can initiate call by entering "\call" command (see below).
+
+Example url: https://chat.concert0x.com?v=yy
+Another example: https://chat.concert0x.com?s=xxxxx&v=yy
+
 ## Commands
 
 We opted for keeping UI clean and uncluttered, so instead of complex menus, there's a command like interpreter. Commands are distinguished from text messages by first symbol '\' (backslash). 
@@ -46,7 +53,7 @@ We opted for keeping UI clean and uncluttered, so instead of complex menus, ther
 
 **\end** -stop recording without saving
 
-**\save name** - stop recording and save the song under given name 
+**\save name** - stop recording and save the song under given name. Data is saved in the local store (in a browser). 
 
 **\play name [tempoFactor]** - play recorded song in a different tempo. Good for recording virtuosic pieces for showing off when you can't actually play virtuosically. Unexplored territory. Killer feature of the app.
 
@@ -70,5 +77,11 @@ We opted for keeping UI clean and uncluttered, so instead of complex menus, ther
 
 **\chan** - I don't remember what it's for
 
-## Q/A
-What happens if your partner doesn't have a keyboard? Fine, he/she can just listen to whatever you are playing.
+## Acknowledgements
+
+App uses peer.js library for WebRTC. Corresponding server part is ...
+Built-in synth is borrowed in ...
+Local store library: 
+UI: jquery UI
+hterm: library that I once found on github and copied, but now cannot find it (there's a project of the same name, but it doesn't look the same). Not sure.
+
