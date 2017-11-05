@@ -80,8 +80,12 @@ We opted for keeping UI clean and uncluttered, so instead of complex menus, ther
 ## Acknowledgements
 
 App uses peer.js library for WebRTC. Corresponding server part is ...
+
 Built-in synth is borrowed in ...
+
 Local store library: 
+
 UI: jquery UI
+
 hterm: library that I once found on github and copied, but now cannot find it (there's a project of the same name, but it doesn't look the same). Not sure.
 
