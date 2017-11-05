@@ -40,8 +40,35 @@ We opted for keeping UI clean and uncluttered, so instead of complex menus, ther
 
 **\call** - if video/audio is enabled, then piano1 can use this command to start audio/video session with piano2.
 
+**\kb n onn/off** (n=1 or 2) - show/hide keyboard n
 
+**\rec** - start recording
 
+**\end** -stop recording without saving
+
+**\save name** - stop recording and save the song under given name 
+
+**\play name [tempoFactor]** - play recorded song in a different tempo. Good for recording virtuosic pieces when you can't actually play virtuosically. Unexplored territory.
+
+**\ls**" - list recorded songs
+
+**\mv oldName newName** - rename song
+
+**\cp src dst** - copy song under different name
+
+**\rm name** - remove song
+
+**\export name** - prints song as text in a certain format (details don't matter). Copy it and send to somebody or save for later use.
+
+**\import name encodedSong**  - take output of export and paste it in this command as encodedSong. Song will be imported under given name.
+
+**\setup** - set up a new session (not sure why you need it)
+
+**\audio on/off** -enable/disable audio. only works if you run in multimedia mode (v=yy or yn or ny - see above)
+
+**\video on/off** -enable/disable video. only works if you run in multimedia mode (v=yy or yn or ny - see above).
+
+**\chan** - I don't remember what it's for
 
 ## Q/A
 What happens if your partner doesn't have a keyboard? Fine, he/she can just listen to whatever you are playing.
