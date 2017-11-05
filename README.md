@@ -26,7 +26,7 @@ Here are most common modes of MIDI setup:
 
 The system will open a session (with unique session id) for you and print URL to send to your partner - you can use email or whatever, beyond the app. You will join the session with your partner in different roles. The organizer's role is 'piano1', and partner's - 'piano2'. There can also be a listener to your duo (just one!). This one is not supposed to have a MIDI piano at all, and even if he does, it won't have any effect whatsoever.
 
-So piano1 should connect first, piano2 - second. Piano2 has to press 'connect' button to establish communication with piano1, who at that point is supposed to already connect. 
+So piano1 should connect first, piano2 - second. Piano2 user has to press 'connect' button to actually join the session.
 
 ## Chat
 
@@ -34,10 +34,10 @@ For regular text messages, there's a text box down the page. If you enter text m
 
 ## Video/audio
 
-Video/audio isn't enabled by default (for your peace of mind). To enable it, add parameter to url, like v=yy or yn or ny. First letter (y/n) is for video, second - for audio. You will be requested permission to enable camera and/or microphone. Your partner should also run in video/audio mode, or else nothing will work. Piano1 can initiate call by entering "\call" command (see below).
+Video/audio mode isn't enabled by default (for your peace of mind). To enable it, add parameter to url, like v=yy or yn or ny. First letter (y/n) is for video, second - for audio. You will be requested permission to enable camera and/or microphone. Your partner should also run in video/audio mode (using same v=yy parameter), or else nothing will work. Piano1 can initiate call by entering "\call" command (see below).
 
-Example url: https://chat.concert0x.com?v=yy
-Another example: https://chat.concert0x.com?s=xxxxx&v=yy
+Example url: `https://chat.concert0x.com?v=yy`
+Another example: `https://chat.concert0x.com?s=xxxxx&v=yy`
 
 ## Commands
 
