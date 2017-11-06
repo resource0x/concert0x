@@ -98,7 +98,7 @@ Please note that there's a server part (see peer.js for details). I've set up my
 
 ## Legal
 
-You can use the source code in any way you want, all components are MIT-licensed. But if you use the app (as opposed to staring into source code), and you do it for commercial purposes (e.g. for personal enrichment) then please find a way to contribute to the project.
+You can use the source code in any way you want, all components are MIT-licensed. But if you use the app (as opposed to staring into source code), then please find a way to contribute to the project.
 
 ## Acknowledgements
 
