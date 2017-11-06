@@ -98,7 +98,7 @@ Built-in synth is borrowed from [soundfont-player](https://github.com/danigb/sou
 
 Local store library: [xstore](https://github.com/niiknow/xstore) 
 
-UI: jquery UI
+UI: [jquery UI](https://jqueryui.com)
 
 hterm: library that I once found on github and cloned, but now cannot find it (there's a project of the same name, but it doesn't look the same). Not sure.
 
