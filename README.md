@@ -29,7 +29,7 @@ The system will open a session (with unique session id) for you and print URL to
 So piano1 should connect first, piano2 - second. Piano2 user has to press 'connect' button to actually join the session.
 
 IMPORTANT: right now, program lacks the logic to re-connect gracefully in case of loss of connection. It's not 
-possible to implement reliable mechanism of re-connections without using some out-of-band communication, though some palliative solutions exist (TODO). Right now, in case of loss of connection, both parties should reconnect, wait 5-7 seconds, then repeat (randomness will do its job)
+possible to implement reliable mechanism of re-connections without using some out-of-band communication, though some palliative solutions exist (TODO). Right now, in case of loss of connection, both parties should reconnect, wait 5-7 seconds, then repeat (randomness will do its job). The need to re-connect should not occur very often.
 
 ## Chat
 
