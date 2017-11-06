@@ -28,6 +28,9 @@ The system will open a session (with unique session id) for you and print URL to
 
 So piano1 should connect first, piano2 - second. Piano2 user has to press 'connect' button to actually join the session.
 
+IMPORTANT: right now, program lacks the logic to re-connect gracefully in case of loss of connection. It's not 
+possible to implement reliable mechanism of re-connections without using some out-of-band communication, though some palliative solutions exist (TODO). Right now, in case of loss of connection, both parties should reconnect, wait 5-7 seconds, then repeat (randomness will do its job)
+
 ## Chat
 
 For regular text messages, there's a text box down the page. If you enter text message starting with backslash character, it's interpreted as a "command", not a text message
@@ -57,7 +60,7 @@ We opted for keeping UI clean and uncluttered, so instead of complex menus, ther
 
 **\play name [tempoFactor]** - play recorded song in a different tempo. Good for recording virtuosic pieces for showing off when you can't actually play virtuosically. Unexplored territory. Killer feature of the app.
 
-**\ls**" - list recorded songs
+**\ls** - list recorded songs
 
 **\mv oldName newName** - rename song
 
@@ -69,7 +72,7 @@ We opted for keeping UI clean and uncluttered, so instead of complex menus, ther
 
 **\import name encodedSong**  - take output of export and paste it in this command as encodedSong. Song will be imported under given name.
 
-**\setup** - set up a new session (not sure why you need it)
+**\setup session** - generate a new session. Yes, you need to type the word 'session'. To be used to set up different sessions with different partners. (e.g., when communicating with Bob, my session id is xxx, and for Alice - yyy)
 
 **\audio on/off** -enable/disable audio. only works if you run in multimedia mode (v=yy or yn or ny - see above)
 
