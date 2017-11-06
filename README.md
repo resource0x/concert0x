@@ -4,7 +4,7 @@ concert0x is a web application that enables midi chat between 2 parties, with op
 
 Program is built on WebMidi and WebRTC standards, which are implemented in Chrome since v43. **Only Chrome, nothing else**. Program works by establishing peer-to-peer connection between endpoints, so the delay is as short as it gets (tested between Toronto and SF, the points 3600 km apart: avg delay 20ms).
 
-App is available at https://chat.concert0x.com (no registration required)
+App is hosted on AWS, the url is  https://chat.concert0x.com (no registration required)
 
 ## MIDI setup
 
@@ -98,7 +98,7 @@ Please note that there's a server part (see peer.js for details). I've set up my
 
 ## Legal
 
-You can use the source code in any way you want, all components are MIT-licensed. But if you use the app (as opposed to staring into source code), then please find a way to contribute to the project.
+The program and all components are MIT-licensed. But if you use the cloud-based app repeatedly, please find a way to contribute to the project.
 
 ## Acknowledgements
 
