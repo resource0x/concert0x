@@ -68,7 +68,7 @@ We opted for keeping UI clean and uncluttered, so instead of complex menus, ther
 
 **\rm name** - remove song
 
-**\export name** - prints song as text in a certain format (details don't matter). Copy it and send to somebody or save for later use.
+**\export name** - copies song to clipboard as text in a certain format (details don't matter). You can save it in a file or send to somebody for importing.
 
 **\import name encodedSong**  - take output of export and paste it in this command as encodedSong. Song will be imported under given name.
 
@@ -79,6 +79,16 @@ We opted for keeping UI clean and uncluttered, so instead of complex menus, ther
 **\video on/off** -enable/disable video. only works if you run in multimedia mode (v=yy or yn or ny - see above).
 
 **\chan** - I don't remember what it's for
+
+## Keyboard shortcuts
+
+You can use the wheel as a "control" for a program. Rotate a wheel, hit note C, then release the wheel. This will be interpreted as
+"\rec" command. Here's the list of shortcuts:
+
+- C : `\rec`
+- D : `\save` (save song under generated name)
+- C# : `\play .` (play last recorded song) 
+- D#:  `\play . 2` (play last recorded song in double tempo)
 
 ## Code
 
