@@ -5,6 +5,9 @@ concert0x is a web application that enables midi chat between 2 parties, with op
 Program is built on WebMidi and WebRTC standards, which are implemented in Chrome since v43. **Only Chrome, nothing else**. Program works by establishing peer-to-peer connection between endpoints, so the delay is as short as it gets (tested between Toronto and SF, the points 3600 km apart: avg delay 20ms).
 
 App is hosted on AWS, the url is  https://chat.concert0x.com (no registration required)
+For standalone exercises, go to https://chat.concert0x.com?s=standalone (handy for recording and playback of imported songs)
+
+LIMITATIONS: currectly, program uses only STUN server to establish direct connection between peers. So if you connection fails, you are out of luck. (TURN server is planned).
 
 ## MIDI setup
 
@@ -37,18 +40,20 @@ For regular text messages, there's a text box down the page. If you enter text m
 
 ## Video/audio
 
-Video/audio mode isn't enabled by default (for your peace of mind). To enable it, add parameter to url, like v=yy or yn or ny. First letter (y/n) is for video, second - for audio. You will be requested permission to enable camera and/or microphone. Your partner should also run in video/audio mode (using same v=yy parameter), or else nothing will work. Piano1 can initiate call by entering "\call" command (see below).
+Video/audio mode isn't enabled by default (for your peace of mind). To enable it, add parameter to url, like v=yy or yn or ny. First letter (y/n) is for video, second - for audio. You will be requested permission to enable camera and/or microphone. Your partner should also run in video/audio mode (using same v=yy parameter), or else nothing will work. 
 
 Example url: `https://chat.concert0x.com?v=yy`
 Another example: `https://chat.concert0x.com?s=xxxxx&v=yy`
 
 ## Commands
 
-We opted for keeping UI clean and uncluttered, so instead of complex menus, there's a command like interpreter. Commands are distinguished from text messages by first symbol '\' (backslash). 
+We opted for keeping UI clean and uncluttered, so instead of complex menus, there's a command line interpreter. Commands are distinguished from text messages by first symbol '\' (backslash).
+
+When you work with songs, dot passed as song name stands for the last used song name.
+
+**\demo n** - play demo, n=1,2,3. Handy if you'd like to find out whether your setup works.
 
 **\ping** - test latency of communication channel. Wait 10-20 seconds to see results.
-
-**\call** - if video/audio is enabled, then piano1 can use this command to start audio/video session with piano2.
 
 **\kb n onn/off** (n=1 or 2) - show/hide keyboard n
 
@@ -58,19 +63,19 @@ We opted for keeping UI clean and uncluttered, so instead of complex menus, ther
 
 **\save name** - stop recording and save the song under given name. Data is saved in the local store (in a browser). 
 
-**\play name [tempoFactor]** - play recorded song in a different tempo. Good for recording virtuosic pieces for showing off when you can't actually play virtuosically. Unexplored territory. Killer feature of the app.
+**\play name [tempoFactor]** - play recorded song in a different tempo. Good for recording virtuosic pieces for showing off when you can't actually play virtuosically. Unexplored territory. Killer feature of the app. (My own experiments suggest that values of about 1.3 work best, then the piece starts losing authenticity)
 
 **\ls** - list recorded songs
 
-**\mv oldName newName** - rename song
+**\mv name1 name2** - rename song
 
-**\cp src dst** - copy song under different name
+**\cp name1 name2** - copy song under different name
 
 **\rm name** - remove song
 
-**\export name** - copies song to clipboard as text in a certain format (details don't matter). You can save it in a file or send to somebody for importing.
+**\export name** - copies song to clipboard as text in a certain format (details don't matter). You can save it in a file or send to somebody for importing. I recommend saving in dropbox and obtaining a public URL.
 
-**\import name encodedSong**  - take output of export and paste it in this command as encodedSong. Song will be imported under given name.
+**\import name encodedSong**  - take output of export and paste it in this command as encodedSong. Song will be imported under given name. If you place your song in a txt file in dropbox, you can use public URL in place of song.
 
 **\setup session** - generate a new session. Yes, you need to type the word 'session'. To be used to set up different sessions with different partners. (e.g., when communicating with Bob, my session id is xxx, and for Alice - yyy)
 
@@ -89,6 +94,8 @@ You can use the wheel as a "control" for a program. Rotate a wheel, hit note C, 
 - D : `\save` (save song under generated name)
 - C# : `\play .` (play last recorded song) 
 - D#:  `\play . 2` (play last recorded song in double tempo)
+- F: `\end` (end recording without saving)
+- F#: `stop` (stop playback)
 
 ## Code
 
