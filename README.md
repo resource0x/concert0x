@@ -47,9 +47,9 @@ Another example: `https://chat.concert0x.com?s=xxxxx&v=yy`
 
 ## Commands
 
-We opted for keeping UI clean and uncluttered, so instead of complex menus, there's a command line interpreter. Commands are distinguished from text messages by first symbol '\' (backslash).
+We opted for keeping UI clean and uncluttered, so instead of complex menus, there's a command line interpreter. Commands are distinguished from text messages by first symbol '\\' (backslash).
 
-When you work with songs, dot passed as song name stands for the last used song name.
+When you work with songs, dot passed as song name stands for the last used song name (e.g. `\play .`)
 
 **\demo n** - play demo, n=1,2,3. Handy if you'd like to find out whether your setup works.
 
