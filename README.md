@@ -13,7 +13,7 @@ LIMITATIONS: currectly, program uses only STUN server to establish direct connec
 
 First off, make sure the driver corresponding to your MIDI keyboard is installed on your computer, and the device shows up in "MIDI in" menu and (if your keyboard is a synth) also in MIDI out. Otherwise, please troubleshoot and reload the page.
 
-Select your instrument from the menu. Notice 'echo on/off' button. 'Echo on' is for instruments like dumb MIDI controllers that doesn't have built-in synth. To cover this case, application comes equipped with built-in SW synth of rather average quality, you won't emjoy it much, but it's better than the alternative (which is: nothing at all).
+Select your instrument from the menu. Notice 'echo on/off' button. 'Echo on' is for instruments like dumb MIDI controllers that doesn't have built-in synth. To cover this case, application comes equipped with built-in SW synth of rather average quality, you won't enjoy it much, but it's better than the alternative (which is: nothing at all).
 
 **IMPORTANT**: all the MIDI input of your partner will be routed right to to **your** keyboard, so the sound quality won't be affected by the noise in communication channel. 
 
