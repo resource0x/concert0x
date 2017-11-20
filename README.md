@@ -7,7 +7,7 @@ Program is built on WebMidi and WebRTC standards, which are implemented in Chrom
 App is hosted on AWS, the url is  https://chat.concert0x.com (no registration required)
 For standalone exercises, go to https://chat.concert0x.com?s=standalone (handy for recording and playback of imported songs)
 
-LIMITATIONS: currectly, program uses only STUN server to establish direct connection between peers. So if you connection fails, you are out of luck. (TURN server is planned).
+LIMITATIONS: by default, program uses only STUN servers to establish direct connection between peers. So if you connection fails, you are out of luck. Then you need TURN servers. If you run into this situation, please let me know - I will permanently enable TURN servers for you (TURN servers are not completely free, I have to use commercial service, but it's manageable for now).
 
 ## MIDI setup
 
