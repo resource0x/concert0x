@@ -40,10 +40,7 @@ For regular text messages, there's a text box down the page. If you enter text m
 
 ## Video/audio
 
-Video/audio mode isn't enabled by default (for your peace of mind). To enable it, add parameter to url, like v=yy or yn or ny. First letter (y/n) is for video, second - for audio. You will be requested permission to enable camera and/or microphone. Your partner should also run in video/audio mode (using same v=yy parameter), or else nothing will work. 
-
-Example url: `https://chat.concert0x.com?v=yy`
-Another example: `https://chat.concert0x.com?s=xxxxx&v=yy`
+Video/audio call menu is available to piano1 after successful connection to piano2 is established.
 
 ## Commands
 
@@ -78,10 +75,6 @@ When you work with songs, dot passed as song name stands for the last used song 
 **\import name encodedSong**  - take output of export and paste it in this command as encodedSong. Song will be imported under given name. If you place your song in a txt file in dropbox, you can use public URL in place of song.
 
 **\setup session** - generate a new session. Yes, you need to type the word 'session'. To be used to set up different sessions with different partners. (e.g., when communicating with Bob, my session id is xxx, and for Alice - yyy)
-
-**\audio on/off** -enable/disable audio. only works if you run in multimedia mode (v=yy or yn or ny - see above)
-
-**\video on/off** -enable/disable video. only works if you run in multimedia mode (v=yy or yn or ny - see above).
 
 **\chan** - I don't remember what it's for
 
