@@ -27,7 +27,7 @@ Here are most common modes of MIDI setup:
 
 ## Logging in
 
-The system will open a session (with unique session id) for you and print URL to send to your partner - you can use email or whatever, beyond the app. You will join the session with your partner in different roles. The organizer's role is 'piano1', and partner's - 'piano2'. There can also be a listener to your duo (just one!). This one is not supposed to have a MIDI piano at all, and even if he does, it won't have any effect whatsoever.
+The system will open a session (with unique session id) for you and print URL to send to your partner - you can use email or whatever, beyond the app. You will join the session with your partner in different roles. The organizer's role is 'piano1', and partner's - 'piano2'.
 
 So piano1 should connect first, piano2 - second. Piano2 user has to press 'connect' button to actually join the session.
 
@@ -47,8 +47,6 @@ Video/audio call menu is available to piano1 after successful connection to pian
 We opted for keeping UI clean and uncluttered, so instead of complex menus, there's a command line interpreter. Commands are distinguished from text messages by first symbol '\\' (backslash).
 
 When you work with songs, dot passed as song name stands for the last used song name (e.g. `\play .`)
-
-**\demo n** - play demo, n=1,2,3. Handy if you'd like to find out whether your setup works.
 
 **\ping** - test latency of communication channel. Wait 10-20 seconds to see results.
 
@@ -72,11 +70,9 @@ When you work with songs, dot passed as song name stands for the last used song 
 
 **\export name** - copies song to clipboard as text in a certain format (details don't matter). You can save it in a file or send to somebody for importing. I recommend saving in dropbox and obtaining a public URL.
 
-**\import name encodedSong**  - take output of export and paste it in this command as encodedSong. Song will be imported under given name. If you place your song in a txt file in dropbox, you can use public URL in place of song.
+**\import name encodedSong**  - take output of export and paste it in this command as encodedSong. Song will be imported under given name. If you place your song in a txt file in dropbox, you can use public URL as a second argument.
 
 **\setup session** - generate a new session. Yes, you need to type the word 'session'. To be used to set up different sessions with different partners. (e.g., when communicating with Bob, my session id is xxx, and for Alice - yyy)
-
-**\chan** - I don't remember what it's for
 
 ## Keyboard shortcuts
 
