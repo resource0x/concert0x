@@ -13,9 +13,9 @@ LIMITATIONS: by default, program uses only STUN servers to establish direct conn
 
 First off, make sure the driver corresponding to your MIDI keyboard is installed on your computer, and the device shows up in "MIDI in" menu and (if your keyboard is a synth) also in MIDI out. Otherwise, please troubleshoot and reload the page.
 
-Select your instrument from the menu. Notice 'echo on/off' button. 'Echo on' is for instruments like dumb MIDI controllers that doesn't have built-in synth. To cover this case, application comes equipped with built-in SW synth of rather average quality, you won't enjoy it much, but it's better than the alternative (which is: nothing at all).
+Select your instrument from the menu. Notice 'echo on/off' button. 'Echo on' is for instruments like dumb MIDI controllers that don't have a built-in synth. To cover this case, application comes equipped with the built-in SW synth of rather average quality, you won't enjoy it much, but it's better than the alternative (which is: nothing at all).
 
-**IMPORTANT**: all the MIDI input of your partner will be routed right to to **your** keyboard, so the sound quality won't be affected by the noise in communication channel. 
+**IMPORTANT**: all the MIDI input of your partner will be routed right to **your** keyboard, so the sound quality won't be affected by the noise in the communication channel. 
 
 Here are most common modes of MIDI setup:
 
@@ -36,7 +36,7 @@ possible to implement reliable mechanism of re-connections without using some ou
 
 ## Chat
 
-For regular text messages, there's a text box down the page. If you enter text message starting with backslash character, it's interpreted as a "command", not a text message
+For regular text messages, there's a text box down the page. If you enter a text message starting with backslash character, it's interpreted as a "command", not a text message
 
 ## Video/audio
 
@@ -76,8 +76,7 @@ When you work with songs, dot passed as song name stands for the last used song 
 
 ## Keyboard shortcuts
 
-You can use the wheel as a "control" for a program. Rotate a wheel, hit note C, then release the wheel. This will be interpreted as
-"\rec" command. Here's the list of shortcuts:
+You can use the pitch wheel as a "control" for a program. Rotate a wheel, hit note C, then release the wheel. This will be interpreted as "\rec" command. Here's the list of shortcuts:
 
 - C : `\rec`
 - D : `\save` (save song under generated name)
@@ -88,7 +87,7 @@ You can use the wheel as a "control" for a program. Rotate a wheel, hit note C, 
 
 ## Code
 
-For now, I don't want to publish the code here in easy-to-digest form because the app is still at experimentation phase, and honestly, there's nothing much to see b/c all the heavy lifting of WebRTC is done by peer.js library. In case you want to make sure the app doesn't do anything bad, I placed concatenated sources in release directory. Though you can always hit F12 in Chrome debugger and see what is actually served.
+For now, I don't want to publish the code here in easy-to-digest form because the app is still at experimentation phase, and honestly, there's nothing much to see b/c all the heavy lifting of WebRTC is done by peer.js library. You can always hit F12 in Chrome debugger and see what code is actually served (no obfuscation was applied)
 
 Please note that there's a server part (see peer.js for details). I've set up my own server in the cloud, but in order to save $$$, I had to settle for a pretty basic VM instance, which can be overwhelmed if the app suddenly becomes overly popular.  
 
