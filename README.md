@@ -2,7 +2,7 @@
 ## About
 concert0x is a web application that enables midi chat between 2 parties, with optional video and audio. The idea is that you and your partner connect your/their MIDI instruments, and now you can play a duo. Application displays 2 piano keyboards so each player can not only hear, but see what the other side is playing. Good for piano teaching or discussing musical ideas. 
 
-Program is built on WebMidi and WebRTC standards, which are implemented in Chrome since v43. **Only Chrome, nothing else**. Program works by establishing peer-to-peer connection between endpoints, so the delay is as short as it gets (tested between Toronto and SF, the points 3600 km apart: avg delay 20ms).
+Program is built on WebMidi and WebRTC standards. WebMidi is implemented only in Chrome at the moment. Program works by establishing peer-to-peer connection between endpoints, so the delay is as short as it gets (tested between Toronto and SF, the points 3600 km apart: avg delay 20ms). In browsers not yet supporting WebMidi, program allows to listen to peer's playing (and recordings) via biilt-in synth only.
 
 App is hosted on AWS, the url is  https://chat.concert0x.com (no registration required)
 For standalone exercises, go to https://chat.concert0x.com?s=standalone (handy for recording and playback of imported songs)
@@ -87,7 +87,7 @@ You can use the pitch wheel as a "control" for a program. Rotate a wheel, hit no
 
 ## Code
 
-For now, I don't want to publish the code here in easy-to-digest form because the app is still at experimentation phase, and honestly, there's nothing much to see b/c all the heavy lifting of WebRTC is done by peer.js library. You can always hit F12 in Chrome debugger and see what code is actually served (no obfuscation was applied)
+For now, I don't want to publish the code here in easy-to-digest form because the app is still at experimentation phase, and honestly, there's nothing much to see b/c all the heavy lifting of WebRTC is done by peer.js library. You can always hit F12 in debugger and see what code is actually served (no obfuscation was applied)
 
 Please note that there's a server part (see peer.js for details). I've set up my own server in the cloud, but in order to save $$$, I had to settle for a pretty basic VM instance, which can be overwhelmed if the app suddenly becomes overly popular.  
 
