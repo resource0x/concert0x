@@ -2,7 +2,7 @@
 ## About
 concert0x is a web application that enables midi chat between 2 parties, with optional video and audio. The idea is that you and your partner connect your/their MIDI instruments, and now you can play a duo. Application displays 2 piano keyboards so each player can not only hear, but see what the other side is playing. Good for piano teaching or discussing musical ideas. 
 
-Program is built on WebMidi and WebRTC standards. WebMidi is implemented only in Chrome at the moment. Program works by establishing peer-to-peer connection between endpoints, so the delay is as short as it gets (tested between Toronto and SF, the points 3600 km apart: avg delay 20ms). In browsers not yet supporting WebMidi, program allows to listen to peer's playing (and recordings) via biilt-in synth only.
+Program is built on WebMidi and WebRTC standards. WebMidi is implemented only in Chrome at the moment. In browsers not yet supporting WebMidi, program allows to listen to peer's playing (and recordings) via biilt-in synth only. Program works by establishing peer-to-peer connection between endpoints, so the delay is as short as it gets (tested between Toronto and SF, the points 3600 km apart: avg delay 20ms). 
 
 App is hosted on AWS, the url is  https://chat.concert0x.com (no registration required)
 For standalone exercises, go to https://chat.concert0x.com?s=standalone (handy for recording and playback of imported songs)
