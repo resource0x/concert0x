@@ -40,7 +40,7 @@ For regular text messages, there's a text box down the page. If you enter a text
 
 ## Video/audio
 
-Video/audio call menu is available to piano1 after successful connection to piano2 is established.
+Video/audio call menu is available to piano1 after successful connection to piano2 is established. Feature was tested on diffirent browser configurations with mixed results. Very likely to work when piano1 is on Chrome and piano2 is either on Chrome or Firefox. 
 
 ## Commands
 
