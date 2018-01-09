@@ -70,7 +70,7 @@ When you work with songs, dot passed as song name stands for the last used song 
 
 **\export name** - copies song to clipboard as text in a certain format (details don't matter). You can save it in a file or send to somebody for importing. I recommend saving in dropbox and obtaining a public URL.
 
-**\import name encodedSong**  - take output of export and paste it in this command as encodedSong. Song will be imported under given name. If you place your song in a txt file in dropbox, you can use public URL as a second argument.
+**\import encodedSong**  - take output of export and paste it in this command as encodedSong. If you place your song in a txt file in dropbox, you can use public URL as an argument.
 
 **\setup session** - generate a new session. Yes, you need to type the word 'session'. To be used to set up different sessions with different partners. (e.g., when communicating with Bob, my session id is xxx, and for Alice - yyy)
 
