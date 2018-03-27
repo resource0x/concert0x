@@ -1,36 +1,108 @@
 ## About
 
-Doodle script is a notation for music programming. Designed as a learning tool for experimenting with melodic/rythmic patterns. Implemented as part of midi-chat web application.
+Doodle script is a notation for music programming. Designed as a learning tool for experimenting with melodic/rhythmic patterns. Implemented as part of midi-chat web application.
 
-Because there's no standard terminology, I had to invent one, which is kind of 'work-in-progress', but this affects only verbal descriptions. The meaning of operators is well-defined.
+## Motivation
+
+The intent of this notation is to allow position- and scale- independent encoding of melodic patterns.
+E.g. given note d4 in D minor scale, we can interpret the sequence `c#4 d4 f4 a4` as follows: let d4 be our anchor note. We are forming the sequence of the following notes:
+1) half-tone down from the anchor 2) the anchor 3) chord note up from the anchor 4) another chord note next to the note 3. Thus, we generalized the pattern by encoding it in position-independent manner, so it can be applied to different notes of the same or different scale. 
+Using doodle notation, the pattern can now be written as: `T/-1c T +1k +1k` (anchor T is taken from the context, it carries information about the note AND the scale - see details below). Basically, the pattern is represented as 1-parameter function (with parameter T). As an example, when we apply the pattern to T=a4 over F major, we get a sequence `g#5 a5 c6 f6`, and so on.
+
+## Hello, World
+
+Here's an example of Hollo World in doodle script
+
+```
+pragma title: hello_world
+pragma bpm: 240
+outline o1: f5/~FM g5/~GM c6/~C7 f5/~FM
+motif m: T/-12c +4s ^T
+style st: 24 24 24 24
+voice v1: m*st m*st m*st m*st
+```   
+
+Executes as follows: 
+- parse "outline"
+- parse "voice"
+- for each element of `voice` in the form m*st, set T=corresponding note from outline; render motif m paired with style pattern st. 
+
+NOTE: style multiplier `*st` in voice pattern can be omitted; in this case, the motif will be rendered with the styles encoded in the motif itself, e.g
+
+```
+...
+motif m: *=24 T/-12c +4s ^T
+voice v1: m m m m
+```
 
 ## Melodic patterns
 
-Melodic pattern is represented as a sequence of expressions, where the expression has either of the following formats:
+Melodic pattern can be written as a sequence of note path expressions separated by one or more spaces. Each note path expression evaluates to a note, which is added to the sequence. Syntactically, note path expression is a sequence of path elements separated by slash ("/"). Examples of path expressions: `T/-1c`, `+1k/-1s`. Notation also supports assigment of the form "var=pathExpression", e.g. we can write `x=c5/~CM/+1k x/+1k`. Assignment does not add note to the sequence, just memorizes it for future reference. The last example produces a single note g5.
 
-- hop/hop/.../hop, e.g. T/-1c/oct.5 means: from note T (defined earlier), move 1 chromatic step down, then move the result to octave 5. See hop syntax below
-- name=hop/hop/.../hop - same, but the note is not included into output stream. Instead, it gets assigned to the variable `name`
+## Path elements
 
-## Hop types
+Formal definition is cryptic, illustrating by examples instead:
+- c#5 - absolute note  (note c# in octave 5)
+- +5c - chromatic step(s) (move by 5 semitones up from current position)
+- -2s - diatonic (scale) step(s) (move by 2 diatonic steps down from current position)
+- +2k - chord note step(s) (move to 2nd chord note starting from current position).
+- . - current note, e.g `a3 . .` is equivalent to `a3 a3 a3` 
+- *name* - reference to an earlier assigned variable (identifier) e.g xx/-1s - one scale step down from xx. Identifiers T and S are reserved for standard variables: T is a target note for a motif; S is the target note of the previous bar.
+- ~CM - set scale association of current note, e.g. c4/~CM means: note c4 in scale CM.  Scale attribute is necessary for scale arithmetic, e.g. "c4/~CM/+1k" evaluates to e4, "c4/~Cm/+1k" evaluates to d#4. The note is always associated with some scale. If not explicitly set, most recent scale is used
+- is.k, is.s - note type assertion: is.k - assert that current position is k-note, is.s - assert scale note. If assertion fails, the whole motif is rejected (except when there's no alternatives)
+- isnot.k, isnot.s - negative type assertion: e.g. isnot.k - current note is not k-note
+- is.s?+1c, isnot.k?+1s - conditional step: e.g. is.s?+1c - if current note is s-note then execute chromatic step. Both "is" and "isnot" conditions are supported.
+- f4/CM/root - move to the closes scale root, e.g  f4/CM/root evaluates as c4.
+- c#5/o7 - move note to given octave (evaluates as c#7)
 
-- . - last note
-- name - variable name, e.g T. Names T and S are reserved for standard variables: T is a target note for a motif; S is the target note of the previous bar.
-- xxdd, where xx-note name, dd - octave, e.g. c#5 - note C# in octave 5 (absolute notation)
-- [<>][=]?romanLiteral, e.g. >III - move to 3rd degree of current scale up
-- ~scale - e.g ~CM - add scale marker to the note, e.g. c4/~CM - note c in octave 4, carrying a marker of C Major. Marker is necessary for scale arithmetic.
-- [+-]nnn[skc] - relative step, e.g. +2s - two scale steps up from current position. There are 3 types of steps: chromatic(c), diatonic (s), chord note step (k)
-E.g. c4/~CM/+1k evaluates as e4
-- is.type -assertion like is.k - assert that current position is k-note. If assertion fails, the whole motif is rejected (except when there's no alternatives)
-- isnot.type  - assertion, e.g. isnot.k - current position is not k-note
-- is.type?correctiveStep, e.g. is.s?+1c - if current position is s-note then correct it by chromatic step.
-- isnot.type?correctiveStep - similar to the above, just with opposite condition
-- ~scaleName, e.g. ~Cm - switch to C minor scale
-- oct.N - e.g. oct.7 - move to the same note in a different octave, e.g. c#5/oct.7 evaluates as c#7
+## Note Style
 
-IMPORTANT: note is represented internally as pair (picth, scale). Therefore, every note carries information not only about the pitch, but about the scale associated with it (no requirement for it being a scale note). 
-This makes it possible to perform step calculations of different types.
+Note style incorporates information about note duration, velocity etc, e.g. t24v6 means "note duration is 24 ticks, velocity=6 (gets multiplied by 16 while converting to MIDI velocity value).
+The following attributes are supported:
 
-Special cases 
-- .=expr - assign reference note, e.g. .=T/-1s
-- ~=scale - assign scale for a reference note
-- ~name=scale - for note reffered by name, assign a different scale, e.g. ~T=FM - results in note T being associated with scale FM
+- slot duration, e.g t36 (36 ticks)
+- effective duration, e.g. e48 (48 ticks)
+- velocity level, e.g. v7 (MIDI velocity=7*16)
+- time shift, e.g. +5 (will be shifted by 5 ticks relative to the slot's nominal start-time)
+
+In doodle script, note style can be applied to the note in 3 different ways
+
+- using default style, assigned by `*=noteStyle` expression. Example: `*=t24v6 a5` - note a5 will acquire the default style
+- explicitly, e.g. `+1k/-1s*t24v5`.
+- by specifying `style` name in 'voice' statement (see below)
+
+## Variables
+
+- xx=c#4/~CM/+1k -creating a named variable so it can be later used in expressions like xx/+1k
+- .=T/-1s - assign reference note, e.g. `.=a#5 +1c` evaluates as `b5`
+- ~=FM - assign scale for a reference note (current scale)
+- ~xx=scale - assign a different scale for earlier defined note `xx`, e.g. ~T=FM - results in note T being associated with scale FM
+- *=style - sets the default style for the following motif elements
+
+## Markers and embellishments
+
+Notes in the motif can be marked with `markers` in patentheses:
+
+`motif m: T/-12c(M) +12c(N)` -- markers M and N
+
+Then you can embellish the note using 'emb' statement referring to the marker.
+
+`emb M: T T/-1c T` -- e.g. if T is c4 with duration 24, then it will be replaced with the sequence c4 b3 c4 (each having duration 8);
+
+Notes from emb statement can have their own styles, but duration are treated like they are defined in fractional units, e.g
+
+`emb M: T\*2 T/-1c*1 T*1` -  if T is c4 with duration 24, then it will be replaced with the sequence c4 (duration 12) b3 c4 (each having duration 6);
+
+## replication sugar
+
+To help avoid copy-pasting identical elements/sequences, syntax supports replication sugar:
+
+- `motif m: a4 +1s +1k +1s +1k` can be abbreviated as `motif m: a4 [+1s +1k]*2`
+- `voice m: +1k etc... +1s` - the total number of elements is derived from "outline". `etc...` is suppored for voice and style only b/c runtime knows the total number of elements.
+
+## pragma statement
+
+Examples:
+- pragma title: Hello, World
+- pragma bpm: 120 - sets tempo in beats per minute
+- (this list will grow)
