@@ -2,12 +2,21 @@
 
 Doodle script is a notation for music programming. Designed as a learning tool for experimenting with melodic/rhythmic patterns. Implemented as part of midi-chat web application.
 
+For the explanation of basic concepts and terms used in this write-up please refer to (yet-to-be-recorded) tutorial on youtube.
+
 ## Motivation
 
-The intent of this notation is to allow position- and scale- independent encoding of melodic patterns.
-E.g. given note d4 in D minor scale, we can interpret the sequence `c#4 d4 f4 a4` as follows: let d4 be our anchor note. We are forming the sequence of the following notes:
-1) half-tone down from the anchor 2) the anchor 3) chord note up from the anchor 4) another chord note next to the note 3. Thus, we generalized the pattern by encoding it in position-independent manner, so it can be applied to different notes of the same or different scale. 
-Using doodle notation, the pattern can now be written as: `T/-1c T +1k +1k` (anchor T is taken from the context, it carries information about the note AND the scale - see details below). Basically, the pattern is represented as 1-parameter function (with parameter T). As an example, when we apply the pattern to T=a4 over F major, we get a sequence `g#5 a5 c6 f6`, and so on.
+The intent of this notation is to allow position- and scale- independent encoding of melodic patterns. 
+E.g. we can interpret the sequence `c#4 d4 f4 a4` as follows: let d4 be our anchor note; let D minor be our current scale. We are forming the sequence of the following notes:
+
+1) half-tone down from the anchor 
+2) the anchor 
+3) chord note up from the anchor 
+4) another chord note next to the note 3. 
+
+Thus, we generalized the pattern by encoding it in position-independent manner, so it can be applied to different notes of the same or different scale. 
+
+Using doodle notation, the pattern can now be written as: `T/-1c T +1k +1k` (anchor T is a parameter, it carries information about the note AND the scale - see details below). Basically, the pattern is represented as 1-parameter function (with parameter T). As an example, when we apply the same pattern to the note T=a4 over F major, we get a sequence `g#5 a5 c6 f6`, and so on.
 
 ## Hello, World
 
@@ -15,24 +24,24 @@ Here's an example of Hollo World in doodle script
 
 ```
 pragma title: hello_world
-pragma bpm: 240
-outline o1: f5/~FM g5/~GM c6/~C7 f5/~FM
-motif m: T/-12c +4s ^T
-style st: 24 24 24 24
-voice v1: m*st m*st m*st m*st
+pragma bpm: 240                             # tempo in beats per minute
+outline o1: f5/~FM g5/~GM c6/~C7 f5/~FM     # sequence of 4 anchor notes
+motif m: T/-12c +4s ^T                      # motif to be played on anchor
+style st: 24 24 24                          # styles for motif (each duration=24 ticks)
+voice v1: m*st m*st m*st m*st               # what motif to play for n-th anchor, with what style
 ```   
 
 Executes as follows: 
-- parse "outline"
-- parse "voice"
-- for each element of `voice` in the form m*st, set T=corresponding note from outline; render motif m paired with style pattern st. 
+- parse "outline"  (results in an array of 4 anchor notes)
+- parse "voice"  (results in array of 4 pairs (motif, style) to be rendered for the corresponding anchor)
+- iterate over `voice`: let n-th element of `voice` be m*st; render motif m (by setting T=n-th note from the outline) paired with style pattern st. 
 
 NOTE: style multiplier `*st` in voice pattern can be omitted; in this case, the motif will be rendered with the styles encoded in the motif itself, e.g
 
 ```
 ...
-motif m: *=24 T/-12c +4s ^T
-voice v1: m m m m
+motif m: *=24 T/-12c +4s ^T  # duration of 24 ticks per note
+voice v1: m m m m            # no style override, still uses the style from the motif
 ```
 
 ## Melodic patterns
@@ -60,7 +69,7 @@ Formal definition is cryptic, illustrating by examples instead:
 Note style incorporates information about note duration, velocity etc, e.g. t24v6 means "note duration is 24 ticks, velocity=6 (gets multiplied by 16 while converting to MIDI velocity value).
 The following attributes are supported:
 
-- slot duration, e.g t36 (36 ticks)
+- slot duration, e.g t36 (or simply 36, 't' prefix is optional)
 - effective duration, e.g. e48 (48 ticks)
 - velocity level, e.g. v7 (MIDI velocity=7*16)
 - time shift, e.g. +5 (will be shifted by 5 ticks relative to the slot's nominal start-time)
@@ -93,14 +102,14 @@ Notes from emb statement can have their own styles, but duration are treated lik
 
 `emb M: T\*2 T/-1c*1 T*1` -  if T is c4 with duration 24, then it will be replaced with the sequence c4 (duration 12) b3 c4 (each having duration 6);
 
-## replication sugar
+## Replication sugar
 
 To help avoid copy-pasting identical elements/sequences, syntax supports replication sugar:
 
 - `motif m: a4 +1s +1k +1s +1k` can be abbreviated as `motif m: a4 [+1s +1k]*2`
 - `voice m: +1k etc... +1s` - the total number of elements is derived from "outline". `etc...` is suppored for voice and style only b/c runtime knows the total number of elements.
 
-## pragma statement
+## Pragma statement
 
 Examples:
 - pragma title: Hello, World
