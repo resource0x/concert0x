@@ -1,22 +1,34 @@
 ## About
 
-Doodle script is a notation for music programming. Designed as a learning tool for experimenting with melodic/rhythmic patterns. Implemented as part of midi-chat web application.
+Doodle script is a notation for music programming. Designed as a learning tool for experimenting with melodic/rhythmic patterns. Implemented as part of midi-chat web application (standalone mode,
+available at doodle.concert0x.com).
 
-For the explanation of basic concepts and terms used in this write-up please refer to (yet-to-be-recorded) tutorial on youtube.
+The idea is:
+
+- you are given the outline of the song: the set of notes with associated scales. That is, we have an array of pairs
+[(T1,S1), (T2, S2),...] where Tn - target note in bar n, Sn - scale in bar n. 
+
+- your task is to fill the gaps (interpolate) between the notes of the outline. Interpolation sequence is called `motif`. The motif played in bar N is a melodic pattern that has to approach the target note in bar N+1 using the tones of the current scale of bar N along the way (\*). You may define several motifs - say, m1, m2 and m3, and program your doodle so that m1 is used in bars 1 and 4, and m2 - in bars 2 and 3, etc.
+
+- there's a notation that allows you to write motifs in a position- and scale- independent manner, so you can apply the same motif in a wide range of contexts.
+
+Note: normally, Tn is a chord note in Sn.
+
+(\*) This is called "forward motion" - moving towards the first note of the next bar.
 
 ## Motivation
 
 The intent of this notation is to allow position- and scale- independent encoding of melodic patterns. 
-E.g. we can interpret the sequence `c#4 d4 f4 a4` as follows: let d4 be our anchor note; let D minor be our current scale. We are forming the sequence of the following notes:
+E.g. we can interpret the sequence `c#4 d4 f4 a4` as follows: let d4 be our target (on-beat) note; let D minor be our current scale. We are forming the sequence of the following notes:
 
-1) half-tone down from the anchor 
-2) the anchor 
-3) chord note up from the anchor 
-4) another chord note next to the note 3. 
+1) half-tone down from the target  (in doodle notation:  T/-1c)
+2) the target (T)
+3) chord note up from the target (+1k)
+4) another chord note next to the note 3. (+1k)
 
-Thus, we generalized the pattern by encoding it in position-independent manner, so it can be applied to different notes of the same or different scale. 
+Thus, we generalized the pattern by encoding it in position-independent manner, so it can be applied to different notes of the same or different scale. This is achieved by the use of relative steps of 3 different kinds: chord-note steps (k-step), scalewise step (s-step, not used in this example), chromatic step (c-step)
 
-Using doodle notation, the pattern can now be written as: `T/-1c T +1k +1k` (anchor T is a parameter, it carries information about the note AND the scale - see details below). Basically, the pattern is represented as 1-parameter function (with parameter T). As an example, when we apply the same pattern to the note T=a4 over F major, we get a sequence `g#5 a5 c6 f6`, and so on.
+Using doodle notation, the pattern can now be written as: `T/-1c ^T +1k +1k` (T is a parameter, it carries information about the note AND the scale). Basically, the pattern is represented as 1-parameter function (with parameter T). As an example, when we apply the same pattern to the note T=a4 over F major, we get a sequence `g#5 a5 c6 f6`, and so on.
 
 ## Hello, World
 
@@ -25,18 +37,21 @@ Here's an example of Hollo World in doodle script
 ```
 pragma title: hello_world
 pragma bpm: 240                             # tempo in beats per minute
-outline o1: f5/~FM g5/~GM c6/~C7 f5/~FM     # sequence of 4 anchor notes
-motif m: T/-12c +4s ^T                      # motif to be played on anchor
+outline: f5/~FM g5/~GM c6/~C7 f5/~FM        # sequence of 4 target notes
+motif m: T/-12c +4s ^T                      # motif - approaching target T via sequence of 3 notes
 style st: 24 24 24                          # styles for motif (each duration=24 ticks)
-voice v1: m*st m*st m*st m*st               # what motif to play for n-th anchor, with what style
+voice v1: m*st m*st m*st m*st               # what motif to play for n-th target, with what style
 ```   
 
 Executes as follows: 
-- parse "outline"  (results in an array of 4 anchor notes)
-- parse "voice"  (results in array of 4 pairs (motif, style) to be rendered for the corresponding anchor)
+- parse "outline"  (results in an array of 4 target notes)
+- parse "voice"  (results in array of 4 pairs (motif, style) to be rendered for the corresponding target)
 - iterate over `voice`: let n-th element of `voice` be m*st; render motif m (by setting T=n-th note from the outline) paired with style pattern st. 
 
-NOTE: style multiplier `*st` in voice pattern can be omitted; in this case, the motif will be rendered with the styles encoded in the motif itself, e.g
+NOTES: 
+
+- style multiplier `\*st` in voice pattern can be omitted; in this case, the motif will be rendered with the styles encoded in the motif itself
+- Symbol tilda (^) marks the note that has to be synchronized with the onset of the next bar. In other words, it allows you to position your motif on time axis, relative to bar boundary.
 
 ```
 ...
@@ -44,9 +59,12 @@ motif m: *=24 T/-12c +4s ^T  # duration of 24 ticks per note
 voice v1: m m m m            # no style override, still uses the style from the motif
 ```
 
-## Melodic patterns
+## Motif
 
-Melodic pattern can be written as a sequence of note path expressions separated by one or more spaces. Each note path expression evaluates to a note, which is added to the sequence. Syntactically, note path expression is a sequence of path elements separated by slash ("/"). Examples of path expressions: `T/-1c`, `+1k/-1s`. Notation also supports assigment of the form "var=pathExpression", e.g. we can write `x=c5/~CM/+1k x/+1k`. Assignment does not add note to the sequence, just memorizes it for future reference. The last example produces a single note g5.
+The motif can be written as a sequence of note path expressions separated by one or more spaces. Each note path expression evaluates to a note, which is added to the sequence. Syntactically, note path expression is a sequence of path elements separated by slash ("/"). Examples of path expressions: `T/-1c`, `+1k/-1s`. Notation also supports assigment of the form "var=pathExpression", e.g. we can write `x=c5/~CM/+1k x/+1k`. Assignment does not add note to the sequence, just memorizes it for future reference. The last example produces a single note g5.
+
+Though the goal of the motif is to approach the first note of the next bar (target note), the motif does not necessarily ends on this note - it can continue, thus overlapping in time with the next bar. In general, motif can be thought of as having 3 parts: approach notes; target note; exit notes. Time synchromization of the motif with the next bar is controlled by a tilda symbol.
+
 
 ## Path elements
 
@@ -94,7 +112,7 @@ Notes in the motif can be marked with `markers` in patentheses:
 
 `motif m: T/-12c(M) +12c(N)` -- markers M and N
 
-Then you can embellish the note using 'emb' statement referring to the marker.
+Markers are used to program `embellishments` using 'emb' statement. E.g the following statement....
 
 `emb M: T T/-1c T` -- e.g. if T is c4 with duration 24, then it will be replaced with the sequence c4 b3 c4 (each having duration 8);
 
