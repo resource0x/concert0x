@@ -5,26 +5,25 @@ available at doodle.concert0x.com).
 
 The idea is:
 
-- you are given the outline of the song: the set of notes with associated scales. That is, we have an array of pairs
-[(T0, S0), (T1,S1), (T2, S2),...] where Tn - first (*) note in bar n, Sn - scale in bar n. Basically, this array encodes the chord progression of the song, but incorporates also the outline of the melody.
+- you are given the outline of the song as the set of notes with associated scales. That is, our input is an array of pairs `[(T0, S0), (T1,S1), (T2, S2),...]` where Tn - first (*) note in bar n, Sn - scale in bar n. Basically, this array encodes the chord progression of the song, but incorporates also the outline of the melody.
 
 - your task is to fill the gaps (interpolate) between the notes of the outline. Interpolation sequence is called `motif`. The motif played in bar N is a melodic pattern that has to **approach** the first note in bar N+1 using the tones of the scale of bar N. You may define several motifs - say, m1, m2 and m3, and program your doodle so that m1 is used in bars 1 and 4, and m2 - in bars 2 and 3, etc. Important: notice that the motif is played in bar N, but its goal is to arrive at the first note of bar N+1, which therefore becomes the target note for the bar N. 
 
 - there's a notation that allows you to write motifs in a position- and scale- independent manner, so you can apply the same motif in a wide range of contexts.
 
-(\*) normally, Tn is a chord note in Sn. And \*normally\*, it's first note in bar n, except for the special case of delayed resolution (to be discussed later). Let's just believe for now it's the first note. 
+(\*) *normally*, Tn is a chord note in Sn. And *normally*, it's first note in bar n, except for the special case of delayed resolution (to be discussed later). Let's just believe for now it's the first note. 
 
+NOTE: in doodle script, every note carries information about the scale where it belongs - so the outline is programmed just as a sequence of notes (see below)
 
 ## Motivation
 
 The intent of this notation is to allow position- and scale- independent encoding of melodic patterns. 
 E.g. we can take the pattern from the first bar of the Rondo Alla Turka: `b4 a4 g#4 a4 c5` and interpret it as follows: let T1=c5, S0=S1=A minor. We can generalize the pattern in the following manner:
-`T/-1k/+1s T/-1k T/-1k/-1c T/-1k T`. Here, for the first note, we have `T/-1k/+1s`, which means: from target note T, go 1 chord note down (`k` stands for 'chord note'), then go 1 scale step up (`s` stands for 'scale note'). For the second note, we have
-`T/-1k`, which means: from target note T, go 1 chord note down - and so on. If we denote the last note as dot (.), then we can simplify the expression as `T/-1k/+1s ./-1s ./-1c ./+1c T`. For another improvement, let's agree to omit the dot in the beginning of the path - then we can shorten the encoding again:  `T/-1k/+1s -1s -1c +1c T`.  This is our final form.   
+`T/-1k/+1s T/-1k T/-1k/-1c T/-1k T`. Here, the first note is written as a path expression `T/-1k/+1s`, which means: from target note T, go 1 chord note down (`k` stands for 'chord note'), then go 1 scale step up (`s` stands for 'scale note'). For the second note, we have
+`T/-1k`, which means: from target note T, go 1 chord note down - and so on. If we denote the last note as dot (.), then we can simplify the expression as `T/-1k/+1s ./-1s ./-1c ./+1c T`. Further, let's agree to omit the dot in the beginning of the expression - then we can shorten the encoding again:  `T/-1k/+1s -1s -1c +1c T`.  This is our final form.   
 
-Thus, we generalized the pattern by encoding it in position- and scale-independent manner, so it can be applied to different notes of the same or different scale. This generalization is made possible by the introduction of 'relative steps' of 3 different kinds: chord-note steps (k-step), s-step (scalewise step) and c-step (chromatic step). Basically, the pattern is represented as 1-parameter function (with parameter T). As an example, when we apply the same pattern to the note T=a4 over F major, we get a sequence `g4 f4 e4 f4 a4`.
+Thus, we generalized the pattern by encoding it in position- and scale-independent manner, so it can be applied to different notes of the same or different scale. This generalization is made possible by the introduction of 'relative steps' of 3 different kinds: chord-note steps (k-step), s-step (scalewise step) and c-step (chromatic step). Basically, the pattern is represented as 1-parameter function (with parameter T, which carries information about the pitch and the scale where this pitch belongs). As an example, when we apply the same pattern to the note T=a4 over F major, we get a sequence `g4 f4 e4 f4 a4`.
 
-Using doodle notation, the pattern can now be written as: `T/-1c ^T T/+1k T/+2k` or, simpler, as `T/-1c ^T +1k +1k` (T is a parameter, it carries information about the note AND the scale). 
 
 ## What is scale
 
@@ -41,25 +40,22 @@ F# minor scale:
 ![F# Minor scale](https://dl.dropboxusercontent.com/s/3fjxfggfew3its6/F%23-minor.jpg?dl=0)
 
 The scale changes in every bar (according to the chord progression we chose for the tune), so in each bar we have a different configuration. Notes work like a band of musicians which change their roles during the performance of the song: 
-some come into the front stage, some recede into background. K-notes are similar to soloists, they are featured prominently in the time span of the bar; s-notes serve as a glue for k-notes; c-notes are also used as a glue in some contexts. (This only can be demonstrated on examples, the notion is difficult to verbalize in this manner)
+some come into the front stage, others recede into the background. K-notes are similar to soloists, they are featured prominently in the time span of the bar; s-notes serve as a glue for k-notes; c-notes are also used as a glue in some contexts. (This only can be demonstrated on examples)
 
-Each scale induces a kind of gravitation field where some notes are attracted to each other. k-notes correspond to low altitude points, which attract the neighbors (examples-TBD). 
+Each scale induces a kind of gravitation field, with the force of attraction acting between some notes. k-notes correspond to low altitude points, which attract the neighbors (examples-TBD). 
 The laws of attraction are not necessarily local though (examples-TBD). The notes of the scale therefore form a complex **landscape**.
 
-The scales having the same intervalic structure, but starting on different notes, constitute the class of equivalence called "scale category". Example of scale category: major scale, having the following structure: `x +2c +2c +1c +2c +2c +2c +1c`, where starting point x is a paremeter. For every x, we can build scale instance xM having x as a starting note (root), e.g. C#M is a major scale starting on note C#.
+The scales having the same intervalic structure, but starting on different notes, constitute the class of equivalence called "scale category". Example of scale category: major scale, having the following structure: `x +2c +2c +1c +2c +2c +2c +1c`, where starting point x is a parameter. For every x, we can build scale instance xM having x as a starting note (root), e.g. C#M is a major scale starting on note C#.
 
-In doodle script, we have all commonly used scales (pre)defined in terms of notes properties rather than intervals. E.g. Major scale is defined as an array of 12 note types: `k c s c k s c k c s c s`.
-We can create an instance: `var cMajor = MajorScale.getInstance("c")` (\*), and redirect all requests for path calculations to this instance. E.g. when we write `~CM/a4/+1k`, this instance is reposnsible for finding the chord note next to a4 in C Major - which results in note `c5`.
+In doodle script, we have all commonly used scales (pre)defined in terms of note properties rather than intervals. E.g. Major scale is defined as an array of 12 note types: `k c s c k s c k c s c s`.
+We can create an instance: `majorScale.getInstance("c")`, and redirect all requests for step calculations to this instance; runtime is doing it behind the scenes while processing the notation. 
 
-As a degenerate case of scale, we have chromatic scale, defined as "s s s s s s s s s s s" (that is, "every note is a scale note").
+As a degenerate case of scale, we have chromatic scale, defined as "s s s s s s s s s s s" (that is, "every note is a scale note, with no chord notes").
 
-NOTE: the notion of scale, as defined above, is intentionally simplified. The way how scales are used in jazz is not that straighforward - we will get there eventually :)
-
-(*) in reality, the design of backend is a bit diffeent, but ... you get an idea.
+NOTE: the notion of scale, as defined above, is intentionally simplified. The way how scales are used in jazz is not that straighforward, but we need to start with a simple concept.
 
 ## Hello, World
 
-Here's an example of Hollo World in doodle script
 
 ```
 pragma title: hello_world
@@ -78,13 +74,15 @@ Executes as follows:
 NOTES: 
 
 - style multiplier `\*st` in voice pattern can be omitted; in this case, the motif will be rendered with the styles encoded in the motif itself
-- Symbol tilda (^) marks the note that has to be synchronized with the onset of the next bar. In other words, it allows you to position your motif on time axis, relative to bar boundary.
+- Symbol tilda (^) marks the note that has to be synchronized with the onset of the next bar. In other words, it allows you to position your motif on time axis relative to the bar boundary.
 
 ```
-...
-motif m: *=24 T/-12c +4s ^T  # duration of 24 ticks per note
+outline: f5/~FM g5/~GM c6/~C7 f5/~FM 
+motif m: *=24 T/-12c +4s ^T  # default note duration = 24 ticks
 voice v1: m m m m            # no style override, still uses the style from the motif
 ```
+
+You can define more than one voice (e.g. adding a separate voice for bass line)
 
 ## Motif
 
@@ -99,13 +97,13 @@ Very often, exit notes of the motif can be perceived as the beginning of approac
 
 Formal definition is cryptic, illustrating by examples instead:
 
-- c#5 - absolute note  (note c# in octave 5)
+- c#5 - absolute note  (note c# in octave 5). Only sharps are supported (no flats). Valid names are: `c, c#, d, d#, e, f, f#, g, g#, a, a#, b`
 - +5c - chromatic step(s) (move by 5 semitones up from current position)
 - -2s - diatonic (scale) step(s) (move by 2 diatonic steps down from current position)
 - +2k - chord note step(s) (move to 2nd chord note starting from current position).
 - . - current note, e.g `a3 . .` is equivalent to `a3 a3 a3` 
 - *name* - reference to an earlier assigned variable (identifier) e.g xx/-1s - one scale step down from xx. Identifiers T and S are reserved for standard variables: T is a target note for a motif; S is the target note of the previous bar.
-- ~CM - set scale association of current note, e.g. c4/~CM means: note c4 in scale CM.  Scale attribute is necessary for scale arithmetic, e.g. "c4/~CM/+1k" evaluates to e4, "c4/~Cm/+1k" evaluates to d#4. The note is always associated with some scale. If not explicitly set, most recent scale is used
+- ~CM - set scale association of current note, e.g. c4/~CM means: note c4 in scale CM.  Scale attribute is necessary for scale arithmetic, e.g. "c4/~CM/+1k" evaluates to e4, "c4/~Cm/+1k" evaluates to d#4. The note is always associated with some scale. If not explicitly set, most recent scale is used. 
 - is.k, is.s - note type assertion: is.k - assert that current position is k-note, is.s - assert scale note. If assertion fails, the whole motif is rejected (except when there's no alternatives)
 - isnot.k, isnot.s - negative type assertion: e.g. isnot.k - current note is not k-note
 - is.s?+1c, isnot.k?+1s - conditional step: e.g. is.s?+1c - if current note is s-note then execute chromatic step. Both "is" and "isnot" conditions are supported.
@@ -142,20 +140,20 @@ Notes in the motif can be marked with `markers` in patentheses:
 
 `motif m: T/-12c(M) +12c(N)` -- markers M and N
 
-Markers are used to program `embellishments` using 'emb' statement. E.g the following statement....
+Markers are used to program `embellishments` using 'emb' statement. Example:
 
-`emb M: T T/-1c T` -- e.g. if T is c4 with duration 24, then it will be replaced with the sequence c4 b3 c4 (each having duration 8);
+`emb M: T T/-1c T` -- e.g. if T is c4 with duration 24, then it will be replaced with the sequence `c4 b3 c4` (each having duration 8);
 
-Notes from emb statement can have their own styles, but duration are treated like they are defined in fractional units, e.g
+Notes in `emb` statement can have their own styles, but durations are interpreted in fractional units rather than ticks, e.g
 
-`emb M: T\*2 T/-1c\*1 T\*1` -  if T is c4 with duration 24, then it will be replaced with the sequence c4 (duration 12) b3 c4 (each having duration 6);
+`emb M: T\*2 T/-1c\*1 T\*1` -  if T is c4 with duration 24, then it will be replaced with `c4 b3 c4` where first note has duration 12, and the other two - duration 6.
 
 ## Replication sugar
 
 To help avoid copy-pasting identical elements/sequences, syntax supports replication sugar:
 
 - `motif m: a4 +1s +1k +1s +1k` can be abbreviated as `motif m: a4 [+1s +1k]*2`
-- `voice m: +1k etc... +1s` - the total number of elements is derived from "outline". `etc...` is suppored for voice and style only b/c runtime knows the total number of elements.
+- `voice m: +1k etc... +1s` - the total number of elements is derived from "outline". `etc...` is suppored for voice and style only b/c the interpreter in these cases knows how many tokens it has to substitute.
 
 ## Pragma statement
 
