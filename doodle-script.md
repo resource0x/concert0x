@@ -176,7 +176,7 @@ can be considered a 1-parameter function of parameter T, which gets passed by th
 
 Notes in `sub` statement can have their own styles, but durations are interpreted in fractional units rather than ticks, e.g
 
-`sub M: T\*2 T/-1c\*1 T\*1` -  if T is c4 with duration 24, then it will be replaced with `c4 b3 c4` where first note has duration 12, and the other two - duration 6.
+`sub M: T*2 T/-1c*1 T*1` -  if T is c4 with duration 24, then it will be replaced with `c4 b3 c4` where first note has duration 12, and the other two - duration 6.
 
 ## Replication sugar
 
