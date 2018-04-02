@@ -11,16 +11,16 @@ The idea is:
 
 - doodle notation allows you to write motifs in a position- and scale- independent manner, so you can apply the same motif in a wide range of contexts.
 
-(\*) *normally*, Tn is a chord note in Sn. And *normally*, it's first note in bar n, except for the special case of delayed resolution (to be discussed later). 
+(\*) *normally*, Tn is a chord note in corresponding scale. And *normally*, it's the first note in bar n, except for the special case of delayed resolution (to be discussed later). 
 
 ## Motivation
 
-The intent of this notation is to allow position- and scale- independent encoding of melodic patterns. 
+The intent of doodle notation is to allow position- and scale- independent encoding of melodic patterns. 
 E.g. we can take the pattern from the first bar of the Rondo Alla Turka: `b4 a4 g#4 a4 c5` and interpret it as follows: let T1=c5 in A minor. We can generalize the pattern in the following manner:
 `T/-1k/+1s T/-1k T/-1k/-1c T/-1k T`. Here, the first note is written as a path expression `T/-1k/+1s`, which means: from target note T, go 1 chord note down (`k` stands for 'chord note'), then go 1 scale step up (`s` stands for 'scale note'). For the second note, we have
 `T/-1k`, which means: from note T, go 1 chord note down - and so on. If we denote the last note as dot (.), then we can simplify the expression as `T/-1k/+1s ./-1s ./-1c ./+1c T`. Further, let's agree to omit the dot in the beginning of the expression - then we can shorten the encoding again:  `T/-1k/+1s -1s -1c +1c T`.  This is our final form.   
 
-Thus, we generalized the pattern by encoding it in a position- and scale-independent manner, so it can be applied to different notes of the same or different scale. This generalization is made possible by the introduction of 'relative steps' of 3 different kinds: k-step (chord-note step), s-step (scalewise step) and c-step (chromatic step). In general, the pattern can be thought of as 1-parameter function with parameter T (the anchor defined for the next bar). Now we can render the pattern from different note in a different scale - e.g if we apply it to the note T=a4 over F major, we get a sequence `g4 f4 e4 f4 a4`.
+Thus, we generalized the pattern by encoding it in a position- and scale-independent manner, so it can be applied to different notes of the same or different scale. This generalization is made possible by the introduction of 'relative steps' of 3 different kinds: k-step (chord-note step), s-step (scalewise step) and c-step (chromatic step). In general, the pattern can be thought of as 1-parameter function with parameter T (where T is the anchor of the next bar). Now we can render the pattern from a different note in a different scale - e.g if we apply it to the note T=a4 over F major, we get a sequence `g4 f4 e4 f4 a4`.
 
 Note: generalized pattern sometimes needs to know more about the context than just the target note and its scale. See details below.
 
@@ -35,15 +35,15 @@ Example: C Major scale (k-notes are green, s-notes - blue)
 
 ![C Major scale](https://dl.dropboxusercontent.com/s/gzvcbcvxq6pucik/C-major.jpg?dl=0)
 
-F# minor scale:
+Example: F# minor scale:
 
 ![F# Minor scale](https://dl.dropboxusercontent.com/s/3fjxfggfew3its6/F%23-minor.jpg?dl=0)
 
 The scale changes in every bar (according to the chord progression we chose for the tune), so in each bar we have a different configuration. Notes 'work' like a group of musicians, which change their roles during the performance of the song: some come into the front stage, others recede into the background etc. K-notes are similar to soloists, they are featured prominently in the time span of the bar; s-notes serve as a glue for k-notes; c-notes are also used as a glue in some contexts. (This can only be demonstrated on examples)
 
-The reason why this glue works is this: each scale induces a kind of vector field (or: **landscape**) of tensions and resolutions, with the forces of attraction acting between some notes. Accurate verbal description of this 'field' is difficult - it all depends on tempo, rhythm, style and general context.  
+The reason why this glue works is this: each scale induces a kind of vector field (or: **landscape**) of tensions / resolutions, with the forces of attraction acting between some notes. As an example, you can play C major chord and hit F# in the right hand - it will want to go (resolve) to G. You have to experiment to find out how this field works for every note. 
 
-The scales having the same intervalic structure, but starting on different notes, constitute the class of equivalence called "scale category". Example of scale category: major scale, having the following structure: `x +2c +2c +1c +2c +2c +2c +1c`, where starting point x is a parameter. For every x, we can build scale instance xM having x as a starting note (root), e.g. C#M is a major scale starting on note C#.
+The scales having the same intervalic structure, but starting on different notes, constitute the class of equivalence called "scale category". Example of scale category: major scale, having the following structure: `x +2c +2c +1c +2c +2c +2c`, where starting point x is a parameter. For every x, we can build scale instance xM having x as a starting note (root), e.g. C#M is a major scale starting on note C#.
 
 In doodle script, we have all commonly used scales (pre)defined in terms of note properties rather than intervals. E.g. Major scale is defined as an array of 12 note types: `k c s c k s c k c s c s`.
 We can create an instance: `MajorScale.getInstance("c")`, and redirect all requests for step calculations to this instance; runtime is doing it behind the scenes while processing the notation. 
@@ -55,7 +55,7 @@ NOTE: the notion of scale, as defined above, is intentionally simplified. The wa
 ## Hello, World
 
 ```
-pragma title: hello_world
+pragma title: HelloWorld
 pragma bpm: 120                             # tempo in beats per minute, beat = 24 ticks
 outline: f5/~FM g5/~GM c6/~C7 f5/~FM        # outline: 4 notes
 motif m: T/-12c +4s ^T                      # motif - approaching T via sequence of 3 notes
@@ -75,9 +75,9 @@ NOTES:
 ```
 outline: f5/~FM g5/~GM c6/~C7 f5/~FM 
 motif m: *=24 T/-12c +4s ^T  # default note duration = 24 ticks
-voice v1: m m m m            # no style override, still uses the style from the motif
+voice v1: m m m m            # no style override, uses the original style from the motif
 ```
-- Symbol tilda (^) marks the note that has to be synchronized with the onset of the next bar. In other words, it allows you to position your motif on time axis relative to the bar boundary.
+- Symbol tilda (^) marks the note to be synchronized with the onset of the next bar. In other words, it allows you to position your motif on time axis relative to the bar boundary.
 
 You can define **more than one voice** (e.g. adding a separate voice for bass line).  
 
@@ -109,7 +109,7 @@ Steps:
 - -2s - diatonic (scale) step(s) (move by 2 diatonic steps down from current position)
 - +2k - chord note step(s) (move to 2nd chord note starting from current position).
 - root - move to the closes scale root, e.g  f4/~CM/root evaluates as c4.
-- o7 - move note to given octave (`c#/07` evaluates as c#7)
+- o7 - move note to given octave (`c#/07` evaluates to c#7)
 
 References:
 
@@ -127,7 +127,7 @@ Conditionals:
 Variables
 
 - xx=c#4/~CM/+1k -creating a named variable so it can be later used in expressions like xx/+1k
-- .=T/-1s - assign reference note, e.g. `.=a#5 +1c` evaluates as `b5`
+- .=T/-1s - assign reference note, e.g. `.=a#5 +1c` evaluates to `b5`
 - ~=FM - assign scale for a reference note (current scale)
 - ~xx=scale - assign a different scale for earlier defined note `xx`, e.g. ~T=FM - results in note T being associated with scale FM
 - *=style - sets the default style for the following motif elements
@@ -137,9 +137,11 @@ Predefined variables:
 - T - anchor note to be used as target in the current motif
 - S - previous anchor
 
+
 When the variable is used as an element of path expression, the scale associated with it becomes "current scale", so all further calculations of steps are performed relative to this scale.
 Special expressions `~x` and `@x` are used to refer to the scale or the pitch of x individually. Example: in the expression
-`x=d4/~Dm c4/CM x/+1k` the last note evaluates as f4, because the scale is taken from x. Compare with `x=d4/~Dm c4/CM @x/+1k`. Now the last note is e4, because only the pitch is taken from note x.
+`x=d4/~Dm c4/CM x/+1k` the last note evaluates to f4, because the scale is taken from x. Compare with `x=d4/~Dm c4/CM @x/+1k`. Now the last note is e4, because only the pitch is taken from note x.
+Special case of scale change: `~dom` - changes scale to the dominant scale of current scale. 
 
 
 ## Note Style
