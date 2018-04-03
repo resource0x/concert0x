@@ -238,6 +238,6 @@ Listen to your favorite jazz or rock song if you need a proof that the idea work
 
 - ["The Jazz Piano Book" by Mark Levine](https://www.amazon.com/Jazz-Piano-Book-Mark-Levine/dp/0961470151/ref=sr_1_sc_1?s=books&ie=UTF8&qid=1522792962&sr=1-1-spell)
 
-- ["Forward Motion" by Hal Gelper](https://www.amazon.com/Forward-Motion-Hal-Galper/dp/1883217415/ref=sr_1_1?s=books&ie=UTF8&qid=1522793080&sr=1-1)
+- ["Forward Motion" by Hal Galper](https://www.amazon.com/Forward-Motion-Hal-Galper/dp/1883217415/ref=sr_1_1?s=books&ie=UTF8&qid=1522793080&sr=1-1)
 
 
