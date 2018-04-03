@@ -77,7 +77,7 @@ outline: f5/~FM g5/~GM c6/~C7 f5/~FM
 motif m: *=24 T/-12c +4s ^T  # default note duration = 24 ticks
 voice v1: m m m m            # no style override, uses the original style from the motif
 ```
-- Symbol tilda (^) marks the note to be synchronized with the onset of the next bar. In other words, it allows you to position your motif on time axis relative to the bar boundary.
+- Symbol caret (^) marks the note to be synchronized with the onset of the next bar. In other words, it allows you to position your motif on time axis relative to the bar boundary.
 
 You can define **more than one voice** (e.g. adding a separate voice for bass line).  
 
@@ -85,9 +85,11 @@ You can define **more than one voice** (e.g. adding a separate voice for bass li
 
 The motif can be written as a sequence of note path expressions separated by one or more spaces. Each note path expression evaluates to a note, which is added to the sequence. Syntactically, note path expression is a sequence of path elements separated by slash ("/"). Examples of path expressions: `T/-1c`, `+1k/-1s`. Notation also supports assigment of the form `name=expr`, e.g. we can write `x=c5/~CM/+1k x/+1k`. Assignment does not add note to the sequence, just memorizes it for future reference. The last example produces a single note g5.
 
-Though the goal of the motif is to approach the anchor note of the next bar as a target, the motif does not necessarily ends on this note - it can continue, thus overlapping in time with the next bar. In general, motif can be thought of as having 3 parts: approach notes; target note; exit notes. Which note of the motif is played on the onset of the next bar is controlled by a tilda symbol.
+Though the goal of the motif is to approach the anchor note of the next bar as a target, the motif does not necessarily ends on this note - it can continue, thus overlapping in time with the next bar. In general, motif can be thought of as having 3 parts: approach notes; target note; exit notes. Which note of the motif is played on the onset of the next bar is controlled by a caret symbol.
 
 Very often, exit notes of the motif can be perceived as the beginning of approach sequence for the next target. Some people believe this is the essense of our intuition of the melody.
+
+![Motif layout examples](https://dl.dropboxusercontent.com/s/zy1dbpx9diwgz22/motif-cases-fig.jpg?dl=0)
 
 ## Path elements
 
@@ -193,3 +195,30 @@ Examples:
 - pragma title: Hello, World
 - pragma bpm: 120 - sets tempo in beats per minute. Please don't get fixated on the exact meaning, just put it initially as 120, and then increase or decrease according to your taste.
 - (this list will grow)
+
+## Trivia from music theory
+
+### Construction of chromatic scale
+
+When you hit any note on piano, you can hear the superposition of frequencies, of which one is the fundamental frequency of the note, and others are the multiples - so if we denote the original frequency as f, then for each n, you can hear also the frequency n\*f, with some non-zero amplitude (which is not linear with respect to n). This follows from sring equation. In physical world, the mathematical model doesn't hold exactly, but it's still valid as a first approximation. These extra frequencies are called 'harmonics'.
+
+Among all harmonics the strongest corresponds to n=2, so when we hit the note, say, of frequency 400Hz, then we can hear not only 400Hz tone, but also 800Hz tone. It makes perfect sense to allocate a specific note with frequency 800Hz - these 2 notes will sound "harmonious" if played together. It's clear from here that whenever there's a note of frequency f, there's also a notes of frequency 2*f and f/2 respectively.
+
+Next, we have the next strongest harmonic corresponding to 3\*f. Same logic applies here. As soon as we decided to tune any note to frequency f, it just begs allocating another note with the frequency 3\*f.
+
+We could go further and apply same logic to the multiples of 5, 7 etc, and this (or similar) was tried, but it would lead to proliferation of tones that do not necessarily form a consistent set musically. Historically, different types of tuning were tried, and led to different styles of music, but each type of tuning came with its own problems (long story, omitted here)
+
+Eventually, somebody noticed that the factors of 2 and 3 might be enough to derive a sensible tuning for the entire setup. This is made possible by curious mathematical coincidence: 
+3^12 ~ 2^19. 
+
+Indeed, let's postulate the following rules of tuning. 
+
+1. Select `seed frequency` f arbirtarily, and put it into the set.
+2. If f belongs to the set, put 2\*f into the set (propagation to higher octaves)
+3. If f belongs to the set, put 1/2\*f into the set (propagation to lowe octaves)
+4. if f belongs to the set, put 3\*f into the set (generation)
+
+It's easy to see that after we apply "generation" rule 12 times , each time propagating the result in all octaves, we will arive (on 12th step) at the value which is very close to f (due to arithmetic coincidence observed earlier). And at that point, somebody came up with a brilliant idea: what if we replace rule 4 by another rule, where instead of factor 3 we would use a value, say, alpha, such that
+alpha^12 *exactly* equals 2^19? With such alpha, after 12 iterations the loop closes *exactly*, and we will have exactly 12 distinct notes in each octave.
+
+Listen to your favorite jazz or rock song if you need a proof that the idea works quite well - the song was made possible by the invention of this tuning.
