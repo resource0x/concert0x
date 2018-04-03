@@ -5,13 +5,15 @@ available at doodle.concert0x.com).
 
 The idea is:
 
-- you are given an outline of the song as an array of anchor points `[ T0, T1, T2, ...]` indexed by bar number. Each Tn can be considered as a 'point' in a 'musical space'. Such "point" is similar to the geometric point, with the subtle difference: in musical space, the 'point' is characterized by the absolute pitch AND the scale, so each Tn in fact encodes a pair (pitch, scale). The scale attribute in some sense defines the geometry of the 'space' at a given point. In effect, the array encodes a chord progression, with essential points (anchors) selected for each chord in the progression.
+- you are given an outline of the song as an array of anchor points `[ T1, T2, ...]` indexed by bar number. Each Tn can be considered as a 'point' in a 'musical space'. Such "point" is similar to the geometric point, with the subtle difference: in musical space, the 'point' is characterized by the absolute pitch AND the scale, so each Tn in fact encodes a pair (pitch, scale). The scale attribute in some sense defines the geometry of the 'space' at a given point. In effect, the array encodes a chord progression, with essential points (anchors) selected for each chord in the progression.
 
-- your task is to fill the gaps (interpolate) between the anchors. Interpolation sequence is called a `motif`. The motif played in bar N is a melodic pattern that has to **approach** the anchor in bar N+1. You may define several motifs - say, m1, m2 and m3, and then use motif m1 in bars 1 and 4, motif m2 - in bars 2 and 3, etc. Notice that the motif is played in bar N, but its goal is to arrive at the anchor note of bar N+1 (the latter can be considered a target note for the bar N).
+- your task is to fill the gaps (interpolate) between the anchors. Interpolation sequence is called a `motif`. The motif played in bar N is a melodic pattern that has to **approach** the anchor in bar N+1. You may define several motifs - say, m1, m2 and m3, and then use motif m1 in bars 1 and 4, motif m2 - in bars 2 and 3, etc. Notice that the motif is played in bar N, but its goal is to arrive at the anchor note of bar N+1 (the latter can be considered a target note for the bar N). 
 
 - doodle notation allows you to write motifs in a position- and scale- independent manner, so you can apply the same motif in a wide range of contexts.
 
-(\*) *normally*, Tn is a chord note in corresponding scale. And *normally*, it's the first note in bar n, except for the special case of delayed resolution (to be discussed later). 
+(\*) *normally*, Tn is a chord note in corresponding scale. And *normally*, it's the first note in bar n, except for the special case of delayed resolution (to be discussed later).
+
+ 
 
 ## Motivation
 
@@ -43,7 +45,7 @@ The scale changes in every bar (according to the chord progression we chose for 
 
 The reason why this glue works is this: each scale induces a kind of vector field (or: **landscape**) of tensions / resolutions, with the forces of attraction acting between some notes. As an example, you can play C major chord and hit F# in the right hand - it will want to go (resolve) to G. You have to experiment to find out how this field works for every note. 
 
-The scales having the same intervalic structure, but starting on different notes, constitute the class of equivalence called "scale category". Example of scale category: major scale, having the following structure: `x +2c +2c +1c +2c +2c +2c`, where starting point x is a parameter. For every x, we can build scale instance xM having x as a starting note (root), e.g. C#M is a major scale starting on note C#.
+The scales having the same intervalic structure, but starting on different notes, constitute the class of equivalence called "scale category". Example of scale category: major scale, corresponds to the following sequence of intervals: `x +2c +2c +1c +2c +2c +2c`, where starting point x is a parameter. For every x, we can build scale instance xM having x as a starting note (root), e.g. C#M is a major scale starting on note C#.
 
 In doodle script, we have all commonly used scales (pre)defined in terms of note properties rather than intervals. E.g. Major scale is defined as an array of 12 note types: `k c s c k s c k c s c s`.
 We can create an instance: `MajorScale.getInstance("c")`, and redirect all requests for step calculations to this instance; runtime is doing it behind the scenes while processing the notation. 
@@ -88,6 +90,8 @@ The motif can be written as a sequence of note path expressions separated by one
 Though the goal of the motif is to approach the anchor note of the next bar as a target, the motif does not necessarily ends on this note - it can continue, thus overlapping in time with the next bar. In general, motif can be thought of as having 3 parts: approach notes; target note; exit notes. Which note of the motif is played on the onset of the next bar is controlled by a caret symbol.
 
 Very often, exit notes of the motif can be perceived as the beginning of approach sequence for the next target. Some people believe this is the essense of our intuition of the melody.
+
+Different cases of motif layout are illustrated below: approach and exit, approach only, exit only, delayed resolution, overlapping motifs, continuous line.
 
 ![Motif layout examples](https://dl.dropboxusercontent.com/s/zy1dbpx9diwgz22/motif-cases-fig.jpg?dl=0)
 
@@ -200,16 +204,18 @@ Examples:
 
 ### Construction of chromatic scale
 
+Here's a short explanation of why we have 12 notes in each octave, and why the ratio of frequencies of 2 neighboring notes is equal to 2^(1/12).
+
 When you hit any note on piano, you can hear the superposition of frequencies, of which one is the fundamental frequency of the note, and others are the multiples - so if we denote the original frequency as f, then for each n, you can hear also the frequency n\*f, with some non-zero amplitude (which is not linear with respect to n). This follows from sring equation. In physical world, the mathematical model doesn't hold exactly, but it's still valid as a first approximation. These extra frequencies are called 'harmonics'.
 
-Among all harmonics the strongest corresponds to n=2, so when we hit the note, say, of frequency 400Hz, then we can hear not only 400Hz tone, but also 800Hz tone. It makes perfect sense to allocate a specific note with frequency 800Hz - these 2 notes will sound "harmonious" if played together. It's clear from here that whenever there's a note of frequency f, there's also a notes of frequency 2*f and f/2 respectively.
+Among all harmonics the strongest corresponds to n=2, so when we hit the note, say, of frequency 400Hz, then we can hear not only 400Hz tone, but also 800Hz tone. It makes sense to allocate a specific note with frequency 800Hz - these 2 notes will sound "harmonious" if played together. By the same logic, we need also a note of frequency f/2: after all, if we have any notes lower than f, then each of them will have a corresponding "double frequency" note, so one of these "double frequencies" must be exactly f.
 
 Next, we have the next strongest harmonic corresponding to 3\*f. Same logic applies here. As soon as we decided to tune any note to frequency f, it just begs allocating another note with the frequency 3\*f.
 
 We could go further and apply same logic to the multiples of 5, 7 etc, and this (or similar) was tried, but it would lead to proliferation of tones that do not necessarily form a consistent set musically. Historically, different types of tuning were tried, and led to different styles of music, but each type of tuning came with its own problems (long story, omitted here)
 
-Eventually, somebody noticed that the factors of 2 and 3 might be enough to derive a sensible tuning for the entire setup. This is made possible by curious mathematical coincidence: 
-3^12 ~ 2^19. 
+Eventually, somebody noticed that the factors of 2 and 3 might be enough to derive a sensible tuning for the entire setup. This is made possible by curious numeric coincidence: 
+3^12 is close to 2^19. 
 
 Indeed, let's postulate the following rules of tuning. 
 
@@ -218,7 +224,20 @@ Indeed, let's postulate the following rules of tuning.
 3. If f belongs to the set, put 1/2\*f into the set (propagation to lowe octaves)
 4. if f belongs to the set, put 3\*f into the set (generation)
 
-It's easy to see that after we apply "generation" rule 12 times , each time propagating the result in all octaves, we will arive (on 12th step) at the value which is very close to f (due to arithmetic coincidence observed earlier). And at that point, somebody came up with a brilliant idea: what if we replace rule 4 by another rule, where instead of factor 3 we would use a value, say, alpha, such that
-alpha^12 *exactly* equals 2^19? With such alpha, after 12 iterations the loop closes *exactly*, and we will have exactly 12 distinct notes in each octave.
+(we will see why we don't need a rule for 1/3\*f shortly)
+
+It's easy to see that after we apply "generation" rule 12 times , each time propagating the result into all octaves, we will arive (on 12th step) at the value which is very close to f. About 400 years ago, somebody came up with a brilliant idea (\*): what if we replace rule 4 by another rule, where instead of factor 3 we would use a value, say, alpha, such that
+alpha^12 *exactly* equals 2^19? With such alpha, after 12 iterations the loop closes *exactly*, and we will have exactly 12 distinct notes in each octave. This alpha is equal to 2^(19/12)=2.9966.
 
 Listen to your favorite jazz or rock song if you need a proof that the idea works quite well - the song was made possible by the invention of this tuning.
+
+(\*) in fact, the idea was much older than that. The benefits of equals temperament tuning were not obvious, and became apparent only after a long period of experimentation and tinkering. See [wikipedia article](https://en.wikipedia.org/wiki/Equal_temperament) for details.
+
+
+### Further reading
+
+- ["The Jazz Piano Book" by Mark Levine](https://www.amazon.com/Jazz-Piano-Book-Mark-Levine/dp/0961470151/ref=sr_1_sc_1?s=books&ie=UTF8&qid=1522792962&sr=1-1-spell)
+
+- ["Forward Motion" by Hal Gelper](https://www.amazon.com/Forward-Motion-Hal-Galper/dp/1883217415/ref=sr_1_1?s=books&ie=UTF8&qid=1522793080&sr=1-1)
+
+
