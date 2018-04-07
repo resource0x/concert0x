@@ -52,7 +52,7 @@ The scales having the same intervalic structure, but starting on different notes
 
 Please notice that based on this definition, 2 different scales may share the same SET of notes, but differ in a way how k-notes are selected. E.g. C Major and D minor (dorian) consist of same notes `c d e f g a b`, but k-notes are `c e g` for the former, and `d f a` for the latter. Standard chord progressions very often are based on the same set of 7 s-notes throughout the entire composition - the only thing that changes is the set of k-notes, which is enough to cause the radical change in the harmonic landscape from one bar to another (in melodic minor, it's a bit more complicated, but just a bit). It feels like the landscape is "breezing".
 
-![chord progression](https://dl.dropboxusercontent.com/s/dxthpbkbxj6dzj2/chord-progression.gif?dl=0)
+[chord progression](https://dl.dropboxusercontent.com/s/dxthpbkbxj6dzj2/chord-progression.gif?dl=0)
 
 In doodle script, we have some commonly used scales (pre)defined in terms of note properties rather than intervals. E.g. Major scale is defined as an array of 12 note types: `k c s c k s c k c s c s`.
 When we need a major scale starting on note G, we can create an instance: `MajorScale.getInstance("g")`, and then redirect all requests for step calculations to this instance; runtime is doing it behind the scenes while processing the notation. 
